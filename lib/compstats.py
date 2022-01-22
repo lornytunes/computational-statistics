@@ -242,3 +242,16 @@ def percentile_rows(ys_seq: np.array, percents: np.array):
     array = np.sort(array, axis=0)
     rows = [percentile_row(array, p) for p in percents]
     return rows
+
+
+def odds2p(p: np.array) -> np.array:
+    '''
+    Converts odds to probabilities
+    '''
+    return p / (1-p)
+
+def p2odds(o: np.array) -> np.array:
+    '''
+    Converts probabilities to odds
+    '''
+    return o / (o + 1)

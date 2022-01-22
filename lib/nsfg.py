@@ -14,10 +14,8 @@ def read_fem_preg(datadir='data') -> pd.DataFrame:
 
 
 def read_live_fem_preg(datadir='data') -> pd.DataFrame:
-    df = read_fem_preg(datadir).query('outcome == 1')
-    # add the category for first and others
-    df['birthcat'] = pd.Categorical(np.where(df.birthord==1, 'firsts', 'others'))
-    return df
+    return pd.read_feather(os.path.join(datadir, 'live_births.feather'))
+    
 
 
 def read_fem_resp(datadir='data') -> pd.DataFrame:
