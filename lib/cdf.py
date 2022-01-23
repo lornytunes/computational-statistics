@@ -1,5 +1,5 @@
 import bisect
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Iterable
 from collections import Counter
 
 import numpy as np
@@ -21,6 +21,15 @@ class Cdf:
     def from_dict(cls, data: Dict):
         values, freqs = zip(*sorted(data.items()))
         return cls.from_hist(values, freqs)
+    
+    @classmethod
+    def from_series(cls, series: pd.Series):
+        # values in ascending order, counts normalized but not sorted
+        # since we retain the ordering by values
+        counts = series.sort_values().value_counts(sort=False, normalize=True)
+        # this is a new series. the index are the values of the original
+        # and the values are the normalized counts (or probabilities)
+        return cls(counts.index.to_numpy(), np.cumsum(counts.values))
     
     @classmethod
     def from_seq(cls, x):
@@ -214,6 +223,11 @@ class Cdf:
     
     def __getitem__(self, x):
         return self.prob(x)
+    
+    def __call__(self, t):
+        if isinstance(t, Iterable):
+            return self.probs(t)
+        return self.prob(t)
     
     
 def resample_rows_weighted(df: pd.DataFrame, column='finalwgt') -> pd.DataFrame:

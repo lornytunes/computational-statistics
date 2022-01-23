@@ -150,7 +150,13 @@ def sample_rows(df: pd.DataFrame, nrows: int, replace=False) -> pd.DataFrame:
 
     returns: DataFrame
     """
+    if nrows is None:
+        nrows = len(df)
     return df.loc[np.random.choice(df.index, nrows, replace=replace)]
+
+
+def resample_rows(df: pd.DataFrame, nrows: int) -> pd.DataFrame:
+    return sample_rows(df, nrows, replace=True)
 
 
 def var(xs: np.array, mu=None, ddof=0) -> float:
