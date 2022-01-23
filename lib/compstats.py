@@ -255,3 +255,35 @@ def p2odds(o: np.array) -> np.array:
     Converts probabilities to odds
     '''
     return o / (o + 1)
+
+
+def normal_qq(ys: np.array) -> Tuple[np.array, np.array]:
+    """Generates data for a normal probability plot.
+
+    ys: sequence of values
+    jitter: float magnitude of jitter added to the ys 
+
+    returns: numpy arrays xs, ys
+    """
+    xs = np.random.normal(0, 1, len(ys))
+    xs.sort()
+    ys = ys.copy()
+    ys.sort()
+    return xs, ys
+
+
+def fit_line(xs: np.array, intercept, slope) -> np.array:
+    """Fits a straight line fit to the given data.
+
+    xs: sequence of x (in sorted order)
+
+    returns: a numpy array
+    """
+    return intercept + slope * xs
+
+
+def rmse(estimates: np.ndarray, actual: np.float64) -> np.float64:
+    '''
+    Returns the square root of the mean of the squares of the errors
+    '''
+    return np.sqrt(((estimates-actual)**2).mean())
