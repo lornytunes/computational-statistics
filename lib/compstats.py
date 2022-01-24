@@ -39,23 +39,6 @@ def cohen(group1: np.array, group2: np.array) -> np.float64:
     return (group1.mean() - group2.mean()) / pooled_std(group1, group2)
 
 
-def var(xs: np.array, mu=None, ddof=0):
-    """Computes variance.
-
-    xs: sequence of values
-    mu: option known mean
-    ddof: delta degrees of freedom
-
-    returns: float
-    """
-
-    if mu is None:
-        mu = xs.mean()
-
-    ds = xs - mu
-    return np.dot(ds, ds) / (len(xs) - ddof)
-
-
 def trim(t: np.array, p=0.01) -> np.array:
     """Trims the largest and smallest elements of t.
 
@@ -209,8 +192,10 @@ def corr(xs: np.array, ys: np.array):
     """
     meanx = xs.mean()
     meany = ys.mean()
+    varx = var(xs)
+    vary = var(ys)
 
-    return cov(xs, ys, meanx, meany) / np.sqrt(xs.var() * ys.var())
+    return cov(xs, ys, meanx, meany) / np.sqrt(varx * vary)
 
 
 def percentile_row(array: np.array, p: float) -> np.array:
